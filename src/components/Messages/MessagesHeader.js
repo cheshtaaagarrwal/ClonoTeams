@@ -1,6 +1,7 @@
 import React from "react";
 import { Header, Segment, Input, Icon } from "semantic-ui-react";
-
+import firebase from "../../firebase";
+import {Schedule} from "../../Room/mail"
 class MessagesHeader extends React.Component {
   render() {
     const {
@@ -31,7 +32,9 @@ class MessagesHeader extends React.Component {
         </Header>
 
         {/* Channel Search Input */}
+      
         <Header floated="right">
+        <button onClick={Schedule}><Icon name="puzzle piece" color="orange" /></button>
           <Input
             loading={searchLoading}
             onChange={handleSearchChange}

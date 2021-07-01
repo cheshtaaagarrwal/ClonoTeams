@@ -4,6 +4,8 @@ import App from "./components/App";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import Spinner from "./Spinner";
+import {Mail, openPage} from  "./Room/mail"
+
 import registerServiceWorker from "./registerServiceWorker";
 import firebase from "./firebase";
 
@@ -30,7 +32,7 @@ class Root extends React.Component {
       if (user) {
         // console.log(user);
         this.props.setUser(user);
-        this.props.history.push("/");
+        // this.props.history.push("/");
       } else {
         this.props.history.push("/login");
         this.props.clearUser();
@@ -46,6 +48,8 @@ class Root extends React.Component {
         <Route exact path="/" component={App} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
+        <Route exact path="/room" render={() => {window.location.href="Room/room.html"}} />
+       
       </Switch>
     );
   }
