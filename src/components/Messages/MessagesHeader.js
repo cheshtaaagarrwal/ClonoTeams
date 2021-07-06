@@ -1,7 +1,8 @@
 import React from "react";
-import { Header, Segment, Input, Icon } from "semantic-ui-react";
+import { Header, Segment, Input, Icon ,Button} from "semantic-ui-react";
 import firebase from "../../firebase";
-import {Schedule} from "../../Room/mail"
+
+
 class MessagesHeader extends React.Component {
   render() {
     const {
@@ -11,9 +12,10 @@ class MessagesHeader extends React.Component {
       searchLoading,
       isPrivateChannel,
       handleStar,
+      submitdetails,
       isChannelStarred
     } = this.props;
-
+    
     return (
       <Segment clearing>
         {/* Channel Title */}
@@ -25,16 +27,22 @@ class MessagesHeader extends React.Component {
                 onClick={handleStar}
                 name={isChannelStarred ? "star" : "star outline"}
                 color={isChannelStarred ? "yellow" : "black"}
+               
               />
+               
             )}
+            
           </span>
+         
           <Header.Subheader>{numUniqueUsers}</Header.Subheader>
         </Header>
 
         {/* Channel Search Input */}
-      
+        <Button floated="right" onClick={submitdetails}><Icon name="video" color="black" /></Button>
         <Header floated="right">
-        <button onClick={Schedule}><Icon name="puzzle piece" color="orange" /></button>
+         
+       
+        
           <Input
             loading={searchLoading}
             onChange={handleSearchChange}

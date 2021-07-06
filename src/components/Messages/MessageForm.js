@@ -196,7 +196,11 @@ class MessageForm extends React.Component {
         });
       });
   };
-
+  onKeyPress = (e) => {
+    if(e.which === 13) {
+      this.sendMessage();
+    }
+  }
   render() {
     // prettier-ignore
     const { errors, message, loading, modal, uploadState, percentUploaded, emojiPicker } = this.state;
@@ -217,6 +221,7 @@ class MessageForm extends React.Component {
           name="message"
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
+          onKeyPress={this.onKeyPress}
           value={message}
           ref={node => (this.messageInputRef = node)}
           style={{ marginBottom: "0.7em" }}

@@ -9,6 +9,7 @@ import MessageForm from "./MessageForm";
 import Message from "./Message";
 import Typing from "./Typing";
 import Skeleton from "./Skeleton";
+import ModalTrigger from "./modal";
 
 class Messages extends React.Component {
   state = {
@@ -23,6 +24,7 @@ class Messages extends React.Component {
     usersRef: firebase.database().ref("users"),
     numUniqueUsers: "",
     searchTerm: "",
+    message:"hey",
     searchLoading: false,
     searchResults: [],
     typingRef: firebase.database().ref("typing"),
@@ -32,7 +34,7 @@ class Messages extends React.Component {
 
   componentDidMount() {
     const { channel, user } = this.state;
-
+    // const {message}=await this.random();
     if (channel && user) {
       this.addListeners(channel.id);
       this.addUserStarsListener(channel.id, user.uid);
@@ -102,7 +104,23 @@ class Messages extends React.Component {
       this.countUserPosts(loadedMessages);
     });
   };
+random=()=> {
+    return new Promise(rd => {
+      var result = '';
+      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var charactersLength = characters.length;
+      for (var i = 0; i < 15; i++) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      let temp="https://clonoteams.herokuapp.com/room.html?room="+result+"&name=";
+    
+      this.setState({ message: temp }, () => {
+        console.log(this.state.message);
 
+        rd(this.state.message);
+      }); 
+    });
+}
   addUserStarsListener = (channelId, userId) => {
     this.state.usersRef
       .child(userId)
@@ -154,7 +172,7 @@ class Messages extends React.Component {
         });
     }
   };
-
+ 
   handleSearchChange = event => {
     this.setState(
       {
@@ -207,14 +225,20 @@ class Messages extends React.Component {
     }, {});
     this.props.setUserPosts(userPosts);
   };
-
+ alignment=(message,user)=>{
+    if(message.user==user)
+     return "left";
+     else 
+     return "right";
+  }
   displayMessages = messages =>
     messages.length > 0 &&
     messages.map(message => (
-      <Message
+      <Message float={this.alignment(message,this.state.user)}
         key={message.timestamp}
         message={message}
         user={this.state.user}
+      
       />
     ));
 
@@ -243,7 +267,57 @@ class Messages extends React.Component {
         ))}
       </React.Fragment>
     ) : null;
-
+    createMessage = (fileUrl = null) => {
+      const message = {
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        user: {
+          id: this.state.user.uid,
+          name: this.state.user.displayName,
+          avatar: this.state.user.photoURL
+        }
+      };
+      if (fileUrl !== null) {
+        message["image"] = fileUrl;
+      } else {
+        const modalTrigger = new RegExp("https://clonoteams.herokuapp.com/room.html[.]*");
+        message["content"] = this.state.message;
+        // if(modalTrigger.test(message["content"]))
+        // {
+        //   console.log("Hello");
+        //   <ModalTrigger setOpen="true"></ModalTrigger>
+        // }
+      }
+      return message;
+    };
+    sendMessage = () => {
+      const { getMessagesRef } = this.state;
+      const { message, channel, user, typingRef } = this.state;
+  
+      if (message) {
+        this.setState({ loading: true });
+        this.getMessagesRef()
+          .child(channel.id)
+          .push()
+          .set(this.createMessage())
+          .then(() => {
+            this.setState({ message: "" });
+            typingRef
+              .child(channel.id)
+              .child(user.uid)
+              .remove();
+          })
+          
+          }
+      } 
+      
+    
+  
+     submitdetails= async ()=>{
+      this.state.message=await this.random();
+      console.log("result = " + this.state.message);
+         {this.sendMessage()};
+         window.open(this.state.message+this.state.user.displayName);
+    }
   render() {
     // prettier-ignore
     const { messagesRef, messages, channel, user, numUniqueUsers, searchTerm, searchResults, searchLoading, privateChannel, isChannelStarred, typingUsers, messagesLoading } = this.state;
@@ -258,9 +332,10 @@ class Messages extends React.Component {
           isPrivateChannel={privateChannel}
           handleStar={this.handleStar}
           isChannelStarred={isChannelStarred}
+          submitdetails={this.submitdetails}
         />
 
-        <Segment>
+        <Segment  style={{ marginBottom: "8.5em" }}>
           <Comment.Group className="messages">
             {this.displayMessageSkeleton(messagesLoading)}
             {searchTerm

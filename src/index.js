@@ -4,11 +4,10 @@ import App from "./components/App";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import Spinner from "./Spinner";
-import {Mail, openPage} from  "./Room/mail"
-
+import { Redirect } from "react-router";
 import registerServiceWorker from "./registerServiceWorker";
 import firebase from "./firebase";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "semantic-ui-css/semantic.min.css";
 
 import {
@@ -23,6 +22,7 @@ import { Provider, connect } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./reducers";
 import { setUser, clearUser } from "./actions";
+// import RoomLayout from "./components/RoomLayout/RoomLayout";
 
 const store = createStore(rootReducer, composeWithDevTools());
 
@@ -32,7 +32,7 @@ class Root extends React.Component {
       if (user) {
         // console.log(user);
         this.props.setUser(user);
-        // this.props.history.push("/");
+        this.props.history.push("/");
       } else {
         this.props.history.push("/login");
         this.props.clearUser();
@@ -48,8 +48,9 @@ class Root extends React.Component {
         <Route exact path="/" component={App} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route exact path="/room" render={() => {window.location.href="Room/room.html"}} />
+        {/* <Route exact path="/room" component={RoomLayout} /> */}
        
+
       </Switch>
     );
   }
