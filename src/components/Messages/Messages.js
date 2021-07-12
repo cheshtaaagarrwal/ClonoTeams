@@ -17,7 +17,7 @@ class Messages extends React.Component {
     privateMessagesRef: firebase.database().ref("privateMessages"),
     messagesRef: firebase.database().ref("messages"),
     messages: [],
-    messagesLoading: true,
+    messagesLoading: false,
     channel: this.props.currentChannel,
     isChannelStarred: false,
     user: this.props.currentUser,
@@ -109,7 +109,7 @@ random=()=> {
       var result = '';
       var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       var charactersLength = characters.length;
-      for (var i = 0; i < 15; i++) {
+      for (var i = 0; i < 6; i++) {
           result += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
       let temp="https://clonoteams.herokuapp.com/room.html?room="+result+"&name=";
@@ -232,7 +232,7 @@ random=()=> {
      return "right";
   }
   displayMessages = messages =>
-    messages.length > 0 &&
+    messages.length >= 0 &&
     messages.map(message => (
       <Message float={this.alignment(message,this.state.user)}
         key={message.timestamp}
@@ -249,7 +249,7 @@ random=()=> {
   };
 
   displayTypingUsers = users =>
-    users.length > 0 &&
+    users.length >= 0 &&
     users.map(user => (
       <div
         style={{ display: "flex", alignItems: "center", marginBottom: "0.2em" }}

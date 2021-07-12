@@ -15,6 +15,7 @@ const App = ({ currentUser, currentChannel, isPrivateChannel, userPosts, primary
       key={currentUser && currentUser.name}
       currentUser={currentUser}
     />
+    
     <SidePanel
       key={currentUser && currentUser.uid}
       currentUser={currentUser}

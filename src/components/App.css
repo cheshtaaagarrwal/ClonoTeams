@@ -9,8 +9,11 @@ body,
 /* SidePanel.js */
 .menu {
   padding-bottom: 2em;
+ 
 }
-
+.side{
+  overflow-y: scroll;
+}
 /* Messages.js */
 .messages {
   height: 62vh;
@@ -51,7 +54,7 @@ body,
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  width: 35px;
+  width: 30px;
   border-radius: 3px;
 }
 

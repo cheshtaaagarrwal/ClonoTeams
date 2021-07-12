@@ -17,6 +17,7 @@ class SidePanel extends React.Component {
         fixed="left"
         vertical
         style={{ background: primaryColor, fontSize: "1.2rem" }}
+        className="side"
       >
         <UserPanel primaryColor={primaryColor} currentUser={currentUser} />
         <Starred currentUser={currentUser} />
